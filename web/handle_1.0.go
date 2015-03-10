@@ -65,7 +65,7 @@ func GetServerKt(w http.ResponseWriter, r *http.Request) {
 
 	log.Error("map_list : %v", map_list)
 
-	fix_addrs = make([]string, len(addrs))
+	fix_addrs := make([]string, len(addrs))
 	for _, addr := range addrs {
 		sArr := strings.Split(addr, ":")
 		ip := sArr[0]
