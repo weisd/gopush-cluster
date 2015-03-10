@@ -54,18 +54,13 @@ func GetServerKt(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// weisd 处理内外网ip对应
-	log.Error("ipmaps : %v", Conf.IpMaps)
-	log.Error("addrs : %v", addrs)
-
 	map_list := map[string]string{}
 	for _, m := range Conf.IpMaps {
 		mArr := strings.Split(m, ":")
 		map_list[mArr[0]] = mArr[1];
 	}
 
-	log.Error("map_list : %v", map_list)
-
-	fix_addrs := make([]string, len(addrs))
+	fix_addrs := make([]string, 0)
 	for _, addr := range addrs {
 		sArr := strings.Split(addr, ":")
 		ip := sArr[0]
