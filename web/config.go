@@ -50,6 +50,9 @@ type Config struct {
 	ZookeeperMigratePath string        `goconf:"zookeeper:migrate.path"`
 	RPCRetry             time.Duration `goconf:"rpc:retry:time"`
 	RPCPing              time.Duration `goconf:"rpc:ping:time"`
+
+	// weisd add 内网ip与外网ip对应表
+	IpMaps				 []string      `goconf:"kt:ip.map:,"`
 }
 
 // InitConfig init configuration file.
@@ -76,6 +79,8 @@ func InitConfig() error {
 		ZookeeperMigratePath: "/gopush-migrate-lock",
 		RPCRetry:             3 * time.Second,
 		RPCPing:              1 * time.Second,
+		// weisd add 内网ip与外网ip对应表
+		IpMaps:				  []string{"localhost:127.0.0.1"},
 	}
 	if err := gconf.Unmarshal(Conf); err != nil {
 		return err

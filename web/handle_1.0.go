@@ -24,6 +24,41 @@ import (
 	"time"
 )
 
+// GetServer handle for server get for ktkt
+func GetServerKt(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "Method Not Allowed", 405)
+		return
+	}
+	params := r.URL.Query()
+	key := params.Get("k")
+	callback := params.Get("cb")
+	protoStr := params.Get("p")
+	res := map[string]interface{}{"ret": OK}
+	defer retWrite(w, r, res, callback, time.Now())
+	if key == "" {
+		res["ret"] = ParamErr
+		return
+	}
+	// Match a push-server with the value computed through ketama algorithm
+	node := myrpc.GetComet(key)
+	if node == nil {
+		res["ret"] = NotFoundServer
+		return
+	}
+	addrs, ret := getProtoAddr(node, protoStr)
+	if ret != OK {
+		res["ret"] = ret
+		return
+	}
+
+	// weisd 处理内外网ip对应
+
+
+	res["data"] = map[string]interface{}{"server": addrs[0]}
+	return
+}
+
 // GetServer handle for server get
 func GetServer(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
