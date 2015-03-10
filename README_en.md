@@ -32,16 +32,21 @@ gopush-cluster
 ## Installation
 ### Dependencies
 ```sh
-$ yum -y install java-1.7.0-openjdk$ yum -y install gcc-c++
+$ yum -y install java-1.7.0-openjdk
+$ yum -y install gcc-c++
 ```
 ### zookeeper
 1.mkdir
 ```sh
-$ mkdir -p /data/apps$ mkdir -p /data/logs/gopush-cluster$ mkdir -p /data/programfiles
+$ mkdir -p /data/apps
+$ mkdir -p /data/logs/gopush-cluster
+$ mkdir -p /data/programfiles
 ```
 2.download [zookeeper](http://www.apache.org/dyn/closer.cgi/zookeeper/), suggest version: '3.4.5'.
 ```sh
-$ cd /data/programfiles$ wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz$ tar -xvf zookeeper-3.4.5.tar.gz -C ./
+$ cd /data/programfiles
+$ wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+$ tar -xvf zookeeper-3.4.5.tar.gz -C ./
 ```
 3.start zookeeper
 ```sh
@@ -106,7 +111,7 @@ $ ./dependencies.sh
 
 2.install message,comet,web node
 ```sh
-$ cd $GOPATH/src/github.com/Terry-Mao/gopush-cluster/message
+$ cd $GOPATH/src/github.com/weisd/gopush-cluster/message
 $ go install
 $ cp message-example.conf $GOPATH/bin/message.conf
 $ cp log.xml $GOPATH/bin/message_log.xml
@@ -181,9 +186,9 @@ succeed response:
 ```
 
 ## Configuration
-[web](https://github.com/Terry-Mao/gopush-cluster/blob/master/web/web-example.conf)
-[comet](https://github.com/Terry-Mao/gopush-cluster/blob/master/comet/comet-example.conf)
-[message](https://github.com/Terry-Mao/gopush-cluster/blob/master/message/message-example.conf)
+[web](https://github.com/weisd/gopush-cluster/blob/master/web/web-example.conf)
+[comet](https://github.com/weisd/gopush-cluster/blob/master/comet/comet-example.conf)
+[message](https://github.com/weisd/gopush-cluster/blob/master/message/message-example.conf)
 
 ## Examples
 java: [gopush-cluster-sdk](https://github.com/Terry-Mao/gopush-cluster-sdk)
@@ -194,15 +199,15 @@ javascript: [gopush-cluster-javascript-sdk](https://github.com/Lanfei/gopush-clu
 
 ## Documentation
 `web`
-[external](https://github.com/Terry-Mao/gopush-cluster/blob/master/wiki/web/external_proto_en.textile)
-[internal](https://github.com/Terry-Mao/gopush-cluster/blob/master/wiki/web/internal_proto_en.textile)
+[external](https://github.com/weisd/gopush-cluster/blob/master/wiki/web/external_proto_en.textile)
+[internal](https://github.com/weisd/gopush-cluster/blob/master/wiki/web/internal_proto_en.textile)
 
 `comet`
-[client](https://github.com/Terry-Mao/gopush-cluster/blob/master/wiki/comet/client_proto_en.textile)
-[internal](https://github.com/Terry-Mao/gopush-cluster/blob/master/wiki/comet/rpc_proto_en.textile)
+[client](https://github.com/weisd/gopush-cluster/blob/master/wiki/comet/client_proto_en.textile)
+[internal](https://github.com/weisd/gopush-cluster/blob/master/wiki/comet/rpc_proto_en.textile)
 
 `message`
-[internal](https://github.com/Terry-Mao/gopush-cluster/blob/master/wiki/message/rpc_proto_en.textile)
+[internal](https://github.com/weisd/gopush-cluster/blob/master/wiki/message/rpc_proto_en.textile)
 
 ## FAQ
 1.install hg
@@ -223,7 +228,14 @@ $ export PYTHONPATH=/usr/local/lib64/python2.6/site-packages
 ```
 2.install tcl8.5
 ```sh
-$ cd /data/programfiles$ wget http://downloads.sourceforge.net/tcl/tcl8.5.10-src.tar.gz$ tar -xvf tcl8.5.10-src.tar.gz -C ./$ cd tcl8.5.10$ cd unix$ ./configure$ make$ make install
+$ cd /data/programfiles
+$ wget http://downloads.sourceforge.net/tcl/tcl8.5.10-src.tar.gz
+$ tar -xvf tcl8.5.10-src.tar.gz -C ./
+$ cd tcl8.5.10
+$ cd unix
+$ ./configure
+$ make
+$ make install
 ```
 
 ## LICENSE
