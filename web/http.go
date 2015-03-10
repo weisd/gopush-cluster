@@ -30,6 +30,8 @@ func StartHTTP() {
 	// external
 	httpServeMux := http.NewServeMux()
 	// 2
+	httpServeMux.HandleFunc("/kt/server/get", GetServerKt)
+	// 2
 	httpServeMux.HandleFunc("/2/server/get", GetServer2)
 	// 1.0
 	httpServeMux.HandleFunc("/1/server/get", GetServer)

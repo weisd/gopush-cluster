@@ -53,7 +53,8 @@ func GetServerKt(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// weisd 处理内外网ip对应
-
+	log.Error("ipmaps : %v", Conf.IpMaps)
+	log.Error("addrs : %v", addrs)
 
 	res["data"] = map[string]interface{}{"server": addrs[0]}
 	return
