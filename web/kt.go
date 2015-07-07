@@ -58,7 +58,8 @@ func GetServerKtV2(w http.ResponseWriter, r *http.Request) {
 	}
 	// 随机
 	randSource := rand.New(rand.NewSource(time.Now().UnixNano()))
-	idx := randSource.Intn((len(fix_addrs) - 1))
+
+	idx = randSource.Intn(len(fix_addrs))
 
 	res["data"] = map[string]interface{}{"server": fix_addrs[idx]}
 	return
