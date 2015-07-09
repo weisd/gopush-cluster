@@ -32,6 +32,7 @@ func StartHTTP() {
 	// 2
 	// httpServeMux.HandleFunc("/kt/server/get", GetServerKt)
 	httpServeMux.HandleFunc("/kt2/server/get", GetServerKtV2)
+	httpServeMux.HandleFunc("/kt2/push/result", PushKtResult)
 	// 2
 	httpServeMux.HandleFunc("/2/server/get", GetServer2)
 	// 1.0
