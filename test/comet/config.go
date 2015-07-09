@@ -38,6 +38,9 @@ type Config struct {
 	Addr      string `goconf:"base:addr"`
 	Key       string `goconf:"base:key"`
 	Heartbeat int    `goconf:"base:heartbeat"`
+	Api       string `goconf:"base:api"`
+	Loop      int64  `goconf:"base:loop"`
+	Log       string `goconf:"base:log"`
 }
 
 // InitConfig get a new Config struct.
@@ -47,6 +50,9 @@ func InitConfig(file string) (*Config, error) {
 		Addr:      "localhost:6969",
 		Key:       "Terry-Mao",
 		Heartbeat: 30,
+		Api:       "",
+		Loop:      1,
+		Log:       "./log.xml",
 	}
 	c := goconf.New()
 	if err := c.Parse(file); err != nil {

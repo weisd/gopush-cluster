@@ -52,7 +52,9 @@ type Config struct {
 	RPCPing              time.Duration `goconf:"rpc:ping:time"`
 
 	// weisd add 内网ip与外网ip对应表
-	IpMaps				 []string      `goconf:"kt:ip.map:,"`
+	IpMaps []string `goconf:"kt:ip.map:,"`
+
+	CHANNEL_PREFIX string `goconf:"goconf:"kt:CHANNEL_PREFIX"`
 }
 
 // InitConfig init configuration file.
@@ -80,7 +82,8 @@ func InitConfig() error {
 		RPCRetry:             3 * time.Second,
 		RPCPing:              1 * time.Second,
 		// weisd add 内网ip与外网ip对应表
-		IpMaps:				  []string{"localhost:127.0.0.1"},
+		IpMaps:         []string{"localhost:127.0.0.1"},
+		CHANNEL_PREFIX: "apit",
 	}
 	if err := gconf.Unmarshal(Conf); err != nil {
 		return err
