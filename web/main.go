@@ -46,6 +46,10 @@ func main() {
 		}
 		panic(err)
 	}
+
+	// weisd
+	InitRpcCient()
+
 	// start pprof http
 	perf.Init(Conf.PprofBind)
 	// start http listen.

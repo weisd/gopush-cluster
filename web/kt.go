@@ -13,9 +13,21 @@ import (
 
 	log "code.google.com/p/log4go"
 	"github.com/Unknwon/com"
+	// "github.com/hprose/hprose-go/hprose"
 	myrpc "github.com/weisd/gopush-cluster/rpc"
 	client "github.com/weisd/ktkt_client/go"
 )
+
+func InitRpcCient() {
+	if len(Conf.RpcServer) == 0 {
+		log.Error("RpcServer not found")
+		panic("RpcServer not found")
+	}
+	client.InitClient(Conf.RpcServer)
+	log.Info("连接rpc服务器 : %s", Conf.RpcServer)
+	// c := hprose.NewClient(Conf.RpcServer)
+	// c.UseService(&client.RbacClient)
+}
 
 func EncodeMd5(str string) string {
 	m := md5.New()
