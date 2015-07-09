@@ -53,8 +53,8 @@ type Config struct {
 
 	// weisd add 内网ip与外网ip对应表
 	IpMaps         []string `goconf:"kt:ip.map:,"`
-	CHANNEL_PREFIX string   `goconf:"goconf:"kt:CHANNEL_PREFIX"`
-	RpcServer      string   `goconf:"goconf:"kt:rpc_server"`
+	CHANNEL_PREFIX string   `goconf:"goconf:"kt:chan.prifix"`
+	RpcServer      string   `goconf:"goconf:"kt:rpc.server"`
 }
 
 // InitConfig init configuration file.
@@ -84,7 +84,7 @@ func InitConfig() error {
 		// weisd add 内网ip与外网ip对应表
 		IpMaps:         []string{"localhost:127.0.0.1"},
 		CHANNEL_PREFIX: "apit",
-		RpcServer:      "",
+		RpcServer:      "http://127.0.0.1:3030",
 	}
 	if err := gconf.Unmarshal(Conf); err != nil {
 		return err
