@@ -193,7 +193,7 @@ func PushKtResult(w http.ResponseWriter, r *http.Request) {
 
 	keys := make([]string, 0, len(uids))
 
-	for uid := range uids {
+	for _, uid := range uids {
 		uidStr := com.ToStr(uid)
 
 		keys = append(keys, EncodeMd5(prefix+uidStr))
