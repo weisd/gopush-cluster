@@ -32,7 +32,7 @@ func StartHTTP() {
 	// 2
 	// httpServeMux.HandleFunc("/kt/server/get", GetServerKt)
 	httpServeMux.HandleFunc("/kt2/server/get", GetServerKtV2)
-	httpServeMux.HandleFunc("/kt2/push/result", PushKtResult)
+
 	// 2
 	httpServeMux.HandleFunc("/2/server/get", GetServer2)
 	// 1.0
@@ -49,6 +49,9 @@ func StartHTTP() {
 	httpAdminServeMux.HandleFunc("/1/admin/push/private", PushPrivate)
 	httpAdminServeMux.HandleFunc("/1/admin/push/mprivate", PushMultiPrivate)
 	httpAdminServeMux.HandleFunc("/1/admin/msg/del", DelPrivate)
+
+	httpAdminServeMux.HandleFunc("/kt2/push/result", PushKtResult)
+
 	// old
 	httpAdminServeMux.HandleFunc("/admin/push", PushPrivate)
 	httpAdminServeMux.HandleFunc("/admin/msg/clean", DelPrivate)
