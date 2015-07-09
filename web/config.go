@@ -53,8 +53,8 @@ type Config struct {
 
 	// weisd add 内网ip与外网ip对应表
 	IpMaps         []string `goconf:"kt:ip.map:,"`
-	CHANNEL_PREFIX string   `goconf:"goconf:"kt:chanprifix"`
-	RpcServer      string   `goconf:"goconf:"kt:rpc"`
+	CHANNEL_PREFIX string   `goconf:"kt:chanprifix"`
+	RpcServer      string   `goconf:"kt:rpc"`
 }
 
 // InitConfig init configuration file.
