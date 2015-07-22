@@ -198,7 +198,7 @@ func PushKtResult(w http.ResponseWriter, r *http.Request) {
 
 	// 只发送在sendUids中的用户
 	for _, uid := range uids {
-		for i, l := len(sendUids); i < l; i++ {
+		for i, l := 0, len(sendUids); i < l; i++ {
 			if uid == sendUids[i] {
 				uidStr := com.ToStr(uid)
 
