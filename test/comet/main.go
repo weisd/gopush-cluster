@@ -23,7 +23,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"math/rand"
+	// "math/rand"
 	"net"
 	"net/http"
 	"strconv"
@@ -60,11 +60,15 @@ func Client(idx int64) {
 	// 重新请求连接
 restart:
 
-	restartSec := rand.Intn(20)
+	// restartSec := rand.Intn(20)
 
-	time.Sleep(time.Duration(restartSec) * time.Second)
+	if !first {
+		time.Sleep(10 * time.Second)
+	}
 
-	server := ServerGet(Conf.Api, Conf.Key, idx)
+	key := fmt.Sprintf("%d", idx)
+
+	server := ServerGet(Conf.Api, key, idx)
 	if len(server) == 0 {
 		goto restart
 	}

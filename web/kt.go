@@ -193,11 +193,18 @@ func PushKtResult(w http.ResponseWriter, r *http.Request) {
 
 	keys := make([]string, 0, len(uids))
 
+	// 只发送在发送列表中的，取交集
+	sendUids := client.RbacClient.GetStockSendUidsByStrategyId(strategyId[0])
+
+	// 只发送在sendUids中的用户
 	for _, uid := range uids {
-		uidStr := com.ToStr(uid)
+		for i, l := len(sendUids); i < l; i++ {
+			if uid == sendUids[i] {
+				uidStr := com.ToStr(uid)
 
-		keys = append(keys, EncodeMd5(prefix+uidStr))
-
+				keys = append(keys, EncodeMd5(prefix+uidStr))
+			}
+		}
 	}
 
 	// url param
