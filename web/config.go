@@ -86,7 +86,7 @@ func InitConfig() error {
 		IpMaps:         []string{"localhost:127.0.0.1"},
 		CHANNEL_PREFIX: "apit",
 		RpcServer:      "http://127.0.0.1:3030",
-		PushSleep:      0,
+		PushSleep:      200,
 	}
 	if err := gconf.Unmarshal(Conf); err != nil {
 		return err
