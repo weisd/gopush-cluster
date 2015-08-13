@@ -321,8 +321,8 @@ func CometPushPrivatesQueueGC() {
 				fKeys = append(fKeys, resp.FKeys...)
 			}
 
-			log.Debug("CometPushPrivatesQueueGC 发送 完， 出错 keys %v", fKeys)
-			log.Debug("CometPushPrivatesQueueGC 等 %v", time.Duration(Conf.PushSleep)*time.Millisecond)
+			log.Info("CometPushPrivatesQueueGC 发送 完， 出错 keys %v", fKeys)
+			log.Info("CometPushPrivatesQueueGC 等 %v", time.Duration(Conf.PushSleep)*time.Millisecond)
 
 			time.Sleep(time.Duration(Conf.PushSleep) * time.Millisecond)
 
