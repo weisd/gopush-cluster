@@ -306,7 +306,7 @@ func CometPushPrivatesQueueGC() {
 			for cometInfo, ks := range nodes {
 				client := cometInfo.Rpc.Get()
 				if client == nil {
-					log.Error("cannot get comet rpc client")
+					log.Error("CometPushPrivatesQueueGC cannot get comet rpc client")
 					fKeys = append(fKeys, *ks...)
 					continue
 				}
@@ -321,7 +321,8 @@ func CometPushPrivatesQueueGC() {
 				fKeys = append(fKeys, resp.FKeys...)
 			}
 
-			log.Debug("发送 完， 出错 keys %v", fKeys)
+			log.Debug("CometPushPrivatesQueueGC 发送 完， 出错 keys %v", fKeys)
+			log.Debug("CometPushPrivatesQueueGC 等 %v", time.Duration(Conf.PushSleep)*time.Millisecond)
 
 			time.Sleep(time.Duration(Conf.PushSleep) * time.Millisecond)
 

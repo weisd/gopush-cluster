@@ -53,6 +53,7 @@ func main() {
 	// start pprof http
 	perf.Init(Conf.PprofBind)
 	// start http listen.
+	CometPushPrivatesQueueGC()
 	StartHTTP()
 	// process init
 	if err = process.Init(Conf.User, Conf.Dir, Conf.PidFile); err != nil {
