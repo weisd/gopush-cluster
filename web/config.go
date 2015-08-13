@@ -55,6 +55,7 @@ type Config struct {
 	IpMaps         []string `goconf:"kt:ip.map:,"`
 	CHANNEL_PREFIX string   `goconf:"kt:chanprifix"`
 	RpcServer      string   `goconf:"kt:rpc"`
+	PushSleep      int      `goconf:"kt:pushsleep"`
 }
 
 // InitConfig init configuration file.
@@ -85,6 +86,7 @@ func InitConfig() error {
 		IpMaps:         []string{"localhost:127.0.0.1"},
 		CHANNEL_PREFIX: "apit",
 		RpcServer:      "http://127.0.0.1:3030",
+		PushSleep:      0,
 	}
 	if err := gconf.Unmarshal(Conf); err != nil {
 		return err

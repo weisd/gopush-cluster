@@ -215,43 +215,116 @@ func PushKtResult(w http.ResponseWriter, r *http.Request) {
 		log.Error("strconv.ParseUint(\"%s\", 10, 32) error(%v)", params.Get("expire"), err)
 		return
 	}
-	// match nodes
-	nodes := map[*myrpc.CometNodeInfo]*[]string{}
-	for i := 0; i < len(keys); i++ {
-		node := myrpc.GetComet(keys[i])
-		if node == nil || node.Rpc == nil {
-			res["ret"] = NotFoundServer
-			return
-		}
-		keysTmp, ok := nodes[node]
-		if ok {
-			*keysTmp = append(*keysTmp, keys[i])
-		} else {
-			nodes[node] = &([]string{keys[i]})
-		}
-	}
-	var fKeys []string
-	//push to every node
-	for cometInfo, ks := range nodes {
-		client := cometInfo.Rpc.Get()
-		if client == nil {
-			log.Error("cannot get comet rpc client")
-			fKeys = append(fKeys, *ks...)
-			continue
-		}
-		args := &myrpc.CometPushPrivatesArgs{Msg: json.RawMessage(msg), Expire: uint(expire), Keys: *ks}
-		resp := myrpc.CometPushPrivatesResp{}
-		if err := client.Call(myrpc.CometServicePushPrivates, args, &resp); err != nil {
-			log.Error("client.Call(\"%s\", \"%v\", &ret) error(%v)", myrpc.CometServicePushPrivates, args.Keys, err)
-			fKeys = append(fKeys, *ks...)
-			continue
-		}
-		log.Debug("fkeys len(%d) addr:%v", len(resp.FKeys), cometInfo.RpcAddr)
-		fKeys = append(fKeys, resp.FKeys...)
-	}
+
+	go CometPushPrivatesToQueue(CometPushKtData{Keys: keys, Msg: msg, Expire: expire})
+
 	res["ret"] = OK
-	if len(fKeys) != 0 {
-		res["data"] = map[string]interface{}{"fk": fKeys}
-	}
 	return
+	// todo use
+
+	// // match nodes
+	// nodes := map[*myrpc.CometNodeInfo]*[]string{}
+	// for i := 0; i < len(keys); i++ {
+	// 	node := myrpc.GetComet(keys[i])
+	// 	if node == nil || node.Rpc == nil {
+	// 		res["ret"] = NotFoundServer
+	// 		return
+	// 	}
+	// 	keysTmp, ok := nodes[node]
+	// 	if ok {
+	// 		*keysTmp = append(*keysTmp, keys[i])
+	// 	} else {
+	// 		nodes[node] = &([]string{keys[i]})
+	// 	}
+	// }
+	// var fKeys []string
+	// //push to every node
+	// for cometInfo, ks := range nodes {
+	// 	client := cometInfo.Rpc.Get()
+	// 	if client == nil {
+	// 		log.Error("cannot get comet rpc client")
+	// 		fKeys = append(fKeys, *ks...)
+	// 		continue
+	// 	}
+	// 	args := &myrpc.CometPushPrivatesArgs{Msg: json.RawMessage(msg), Expire: uint(expire), Keys: *ks}
+	// 	resp := myrpc.CometPushPrivatesResp{}
+	// 	if err := client.Call(myrpc.CometServicePushPrivates, args, &resp); err != nil {
+	// 		log.Error("client.Call(\"%s\", \"%v\", &ret) error(%v)", myrpc.CometServicePushPrivates, args.Keys, err)
+	// 		fKeys = append(fKeys, *ks...)
+	// 		continue
+	// 	}
+	// 	log.Debug("fkeys len(%d) addr:%v", len(resp.FKeys), cometInfo.RpcAddr)
+	// 	fKeys = append(fKeys, resp.FKeys...)
+	// }
+	// res["ret"] = OK
+	// if len(fKeys) != 0 {
+	// 	res["data"] = map[string]interface{}{"fk": fKeys}
+	// }
+	// return
+}
+
+// 队列
+type CometPushKtData struct {
+	Keys   []string
+	Msg    []byte
+	Expire uint64
+}
+
+var CometPushPrivatesQueue chan CometPushKtData
+
+func CometPushPrivatesToQueue(data CometPushKtData) {
+	CometPushPrivatesQueue <- data
+}
+
+func CometPushPrivatesQueueGC() {
+	CometPushPrivatesQueue = make(chan CometPushKtData, 5000)
+	go func() {
+		for {
+			pushData := <-CometPushPrivatesQueue
+
+			keys := pushData.Keys
+			msg := pushData.Msg
+			expire := pushData.Expire
+
+			// match nodes
+			nodes := map[*myrpc.CometNodeInfo]*[]string{}
+			for i := 0; i < len(keys); i++ {
+				node := myrpc.GetComet(keys[i])
+				if node == nil || node.Rpc == nil {
+					log.Error("CometPushPrivatesQueueGC node not found for key, %v", keys[i])
+					continue
+				}
+				keysTmp, ok := nodes[node]
+				if ok {
+					*keysTmp = append(*keysTmp, keys[i])
+				} else {
+					nodes[node] = &([]string{keys[i]})
+				}
+			}
+			var fKeys []string
+			//push to every node
+			for cometInfo, ks := range nodes {
+				client := cometInfo.Rpc.Get()
+				if client == nil {
+					log.Error("cannot get comet rpc client")
+					fKeys = append(fKeys, *ks...)
+					continue
+				}
+				args := &myrpc.CometPushPrivatesArgs{Msg: json.RawMessage(msg), Expire: uint(expire), Keys: *ks}
+				resp := myrpc.CometPushPrivatesResp{}
+				if err := client.Call(myrpc.CometServicePushPrivates, args, &resp); err != nil {
+					log.Error("client.Call(\"%s\", \"%v\", &ret) error(%v)", myrpc.CometServicePushPrivates, args.Keys, err)
+					fKeys = append(fKeys, *ks...)
+					continue
+				}
+				log.Debug("fkeys len(%d) addr:%v", len(resp.FKeys), cometInfo.RpcAddr)
+				fKeys = append(fKeys, resp.FKeys...)
+			}
+
+			log.Debug("发送 完， 出错 keys %v", fKeys)
+
+			time.Sleep(time.Duration(Conf.PushSleep) * time.Millisecond)
+
+		}
+	}()
 }

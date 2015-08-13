@@ -69,7 +69,9 @@ restart:
 	key := fmt.Sprintf("%d", idx)
 
 	server := ServerGet(Conf.Api, key, idx)
+	log.Info("server %s", server)
 	if len(server) == 0 {
+		log.Error("server == 0")
 		goto restart
 	}
 
